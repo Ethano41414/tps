@@ -1,3 +1,6 @@
+/*
+!!!!! Le reste du TP se fait entièrement dans le répertoire C3
+*/
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
