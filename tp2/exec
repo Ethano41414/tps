@@ -1,0 +1,3 @@
+#!/bin/bash
+gcc tp2.c -o tp2 -Wall -Wextra -g -lm
+./tp2

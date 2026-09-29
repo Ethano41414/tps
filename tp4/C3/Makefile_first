@@ -2,11 +2,11 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g
 LDLIBS = -lm
 
-TARGET = tp1b
+TARGET = prog
 
-SRC = tp2.c \
-    module/modtp1b.c \
-	module/interface.c
+SRC = tests_vecteur.c \
+	vecteur.c \
+	teZZt.c
 
 OBJ = $(SRC:.c=.o)
 

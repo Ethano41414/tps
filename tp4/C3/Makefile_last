@@ -1,0 +1,25 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -g
+LDLIBS = -lm
+
+TARGET = prog
+
+SRC = prog_last_part.c \
+	vecteur.c \
+    matrix.c
+
+OBJ = $(SRC:.c=.o)
+
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET) $(LDLIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ)
+
+fclean: clean
+	rm -f $(TARGET)
+
+re: fclean $(TARGET)
