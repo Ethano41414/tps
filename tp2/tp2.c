@@ -11,18 +11,15 @@ void echangeParAdresse(char *a, char *b) {
 
 int compter1(char * chaine){ // tant que la valeur du pointeur en (pointeur de la chaine+i n'est pas le marqueur de fin de texte alors i++)
     int i = 0;
-
     while (*(chaine+i) != '\0')
         ++i;
-
     return i;
 }
 
-int compter2(char * chaine) { //on a un garde fou s qui n'avance pas et chaine avance
+int compter2(char * chaine) { //on a un garde-fou s qui n'avance pas et chaine avance
     char *s = chaine;
     while (*chaine != '\0')
         ++chaine;
-
     return chaine - s;
 }
 
@@ -32,7 +29,7 @@ int compter3(char *chaine) { // retourne l'opposé du nombre de caracteres en co
     return chaine - s;
 }
 
-int strlencmp(char *c1, char *c2) {
+int strcmp(char *c1, char *c2) {
     while (*c1 && *c1==*c2) {c1++;c2++;}
     return *c1-*c2;
 }
@@ -45,27 +42,27 @@ void saisir(char *s) {
 
 
 int main() {
-    // /*partie 1-->3*/
-    // int i=5  , *ptri  = &i;
-    // char c1 = 'E', *ptrc1 = &c1;
-    // double d=64416855.46875, *ptrd=&d;
+    /*partie 1-->3*/
+    int i=5  , *ptri  = &i;
+    char c1 = 'E', *ptrc1 = &c1;
+    double d=64416855.46875, *ptrd=&d;
 
 
-    // printf("i valeur pointée: %d  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptri,ptri,&ptri);
-    // printf("c1 valeur pointée: %c  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrc1,ptrc1,&ptrc1);
-    // printf("d valeur pointée: %f  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrd,ptrd,&ptrd);
+    printf("i valeur pointée: %d  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptri,ptri,&ptri);
+    printf("c1 valeur pointée: %c  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrc1,ptrc1,&ptrc1);
+    printf("d valeur pointée: %f  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrd,ptrd,&ptrd);
     
-    // ptrd+=2;// l'adresse du pointeur reste la même. Mais l'adresse dans le pointeur se décale à droite de 2*sizeof(double)=16octets
-    // printf("d valeur pointée: %f  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrd,ptrd,&ptrd);
+    ptrd+=2;// l'adresse du pointeur reste la même. Mais l'adresse dans le pointeur se décale à droite de 2*sizeof(double)=16octets
+    printf("d valeur pointée: %f  adresse dans le pointeur: %p  adresse du pointeur: %p\n",*ptrd,ptrd,&ptrd);
 
-    // char c2='2',*ptrc2=&c2;
-    // char tmp=*ptrc1;            // *ptrc1=*ptrc1+*ptrc2
-    // *ptrc1=*ptrc2;             // *ptrc2=*ptrc1-*ptrc2
-    // *ptrc2=tmp;                // *ptrc1=*ptrc1-*ptrc2
-    // printf("c1=%c   c2=%c\n",c1,c2);
+    char c2='2',*ptrc2=&c2;
+    char tmp=*ptrc1;            // *ptrc1=*ptrc1+*ptrc2
+    *ptrc1=*ptrc2;             // *ptrc2=*ptrc1-*ptrc2
+    *ptrc2=tmp;                // *ptrc1=*ptrc1-*ptrc2
+    printf("c1=%c   c2=%c\n",c1,c2);
 
-    // echangeParAdresse(ptrc1,ptrc2);
-    // printf("echange avec echangeParAdresse(ptrc1,ptrc2)     c1=%c   c2=%c\n",c1,c2);
+    echangeParAdresse(ptrc1,ptrc2);
+    printf("echange avec echangeParAdresse(ptrc1,ptrc2)     c1=%c   c2=%c\n",c1,c2);
 
     // /*partie 4.1*/
     // int tab[] = {0,1,2,3,4,5};
@@ -107,13 +104,13 @@ int main() {
     // saisir(s);
     // printf("Bonjour %s!\n", s);
 
-    // if (strlencmp(s,"ddd")==0) printf("bizarre \n");
+    // if (strcmp(s,"ddd")==0) printf("bizarre \n");
 
     
 
-    /*partie 6*/
-    double *tab=malloc(1000000*sizeof(double));
-    for (int i=0;i<1000000;i++) {tab[i]=i*i; printf("%d ",tab[i]);}
-    free(tab);
+    // /*partie 6*/
+    // double *tab=malloc(1000000*sizeof(double));
+    // for (int i=0;i<1000000;i++) {tab[i]=i*i; printf("%d ",tab[i]);}
+    // free(tab);
     return 0;
 }
