@@ -106,7 +106,7 @@ TEST(AffichageC) {
 
 TEST(Saisie) {
    struct donnee essai;
-   char buffer[1024];
+   char buffer[1024]={0b0};
    strcpy(buffer, "rien\ndutout\n10");
    FILE * file = fmemopen(buffer, 1024, "r");
    // REQUIRE ( NULL != file);
@@ -123,7 +123,7 @@ TEST(Saisie) {
 
 
 TEST(lectureFichier) {
-   donnees_t tableau[TAILLE_MAX];
+   donnees_t *tableau=malloc(TAILLE_MAX*sizeof(donnees_t));
    int taille = 0;
    
    // test d'un fichier non existant
@@ -140,6 +140,7 @@ TEST(lectureFichier) {
    CHECK  ( 0 == strcmp(tableau[1].name, "Minecraft"));
    CHECK  ( 0 == strcmp(tableau[1].alias, "kiux")); 
    CHECK  ( 12304883 == tableau[1].score );
+   free(tableau);
 }
 
 END_TEST_GROUP(tableau_structure)
