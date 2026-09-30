@@ -17,7 +17,6 @@ void showmat(unsigned char *tmpgrid,int size) {
     }
 }
 
-
 unsigned char *create_grid() { //initialise grid
     unsigned char *ggrid=calloc(81,1);
     return ggrid;
