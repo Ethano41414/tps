@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "modtp1b.h"
 /*
 grid  : grid the player can see   81o initialised to 0
 ggrid : game grid with all numbers  81o
@@ -65,3 +66,46 @@ int place_in_grid(int row, int col, int value, unsigned char *grid, unsigned cha
     } 
     return 1;
 }
+
+
+
+
+int verifierLigneColonne(int row, int col, int value, unsigned char *grid) { //if value in line or column: false
+    for (int i=0;i<9;i++) {
+        if ((grid[9*row+i]==value)||(grid[9*i+col]==value)) return 0;
+    }
+    return 1;
+}
+
+int verifierRegion(int row, int col, int value, unsigned char *grid) {
+    int r=row/3 , c=col/3;
+    for (int i=0;i<3;i++)
+        for (int j=0;j<3;j++)
+            if (grid[9*(r+i)+c+j]==value) return 0;
+    return 1;
+}
+
+
+
+
+int correct_tp_place_in_grid(int row, int col, int value, unsigned char *grid) {
+    int wrong=0;
+    if (!(verifierLigneColonne(row,col,value,grid)&&verifierRegion(row,col,value,grid))) wrong=1;
+    grid[row*9+col]=((unsigned char)value & 0x0F);
+    if (wrong) {
+        grid[row*9+col]=(grid[row*9+col]|(((unsigned char)wrong)<<4)); // if value dont mach with ggrid value place 0b1 at the 5th bit
+        errors_count+=1;
+        return 0;
+    } 
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+

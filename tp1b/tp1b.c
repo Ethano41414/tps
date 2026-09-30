@@ -105,8 +105,55 @@ void launch_sudoku() {
     free(grid);free(ggrid);
 }
 
+
+
+
+
+
+int correct_tp_test_number(int row,int col,int num,unsigned char*grid) {
+    char ert[2]; ert[1]='\0';
+    int not_an_error=correct_tp_place_in_grid(row,col,num,grid);
+    interfcolor(0,7);
+    if (!not_an_error) { // if the number is wrong acutalise number color
+        interfcolor(1,7);
+    }
+    ert[0]='0'+num;
+    interfwrite(5+10*(row/3)+3*(row-3*(row/3)),6+22*(col/3)+7*(col-3*(col/3)),ert); // place the number in the right case
+    interfcolor(0,7);
+    return not_an_error;
+}
+
+
+
+void correct_tp_launch_sudoku() {
+    int row,col,val;
+    char rep[5];
+    unsigned char *grid=create_grid(); // init grids
+    unsigned char *ggrid=create_ggrid();
+    interfinit();
+    interfflip_screen();
+    
+    show_game_grid(grid,ggrid);
+    do {                           // game loop
+        interfcolor(7,0);
+        interfclear_zone(32,69,3,50);
+        interfwrite(33,70,"");
+        fgets(rep,5,stdin);
+        if (strlen(rep)==(size_t)4) { //st
+            row=(int)(rep[0]-'0')-1;
+            col=(int)(rep[1]-'0')-1;
+            val=(int)(rep[2]-'0'); // end
+            if (0<=row&&row<9&&0<=col&&col<9&&0<val&&val<=9)
+                correct_tp_test_number(row,col,val,grid); //actualise grid if needed and if it's not an error check if the grid is full
+        }
+    } while (!isgridfull(grid));  // quit the game if the grid is full
+    free(grid);free(ggrid);
+}
+
+
 int main() {  // just launch the game with a new seed
     srand(time(0));
-    launch_sudoku();
+    //launch_sudoku();
+    correct_tp_launch_sudoku();
     return 0;
 }

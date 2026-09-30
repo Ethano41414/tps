@@ -53,4 +53,12 @@ output: 1: in good case , 0 in bad case
 */
 int place_in_grid(int, int, int, unsigned char *, unsigned char *); //use   0 if not the good 1 if right number in case
 
+
+
+int verifierLigneColonne(int row, int col, int value, unsigned char *grid);
+
+int verifierRegion(int row, int col, int value, unsigned char *grid);
+
+int correct_tp_place_in_grid(int row, int col, int value, unsigned char *grid);
+
 #endif
