@@ -1,13 +1,24 @@
 #ifndef code_h
 #define code_h
 
-/* DECLARATION DES TYPES PERSONNELS */
-// et de leur typedef si besoin
+
+#define TAILLE_MAX 20
+
+typedef struct donnee {
+	char name[500];
+	char alias[40];
+	int score;
+} donnees_t;
 
 
-/* DECLARATIONS DES METHODES */
-// void afficherDonnee(FILE *, donnee_t);
-// void saisirDonnee (FILE * , donnee_t *);
-// mettre ici les autres declarations
+void afficherDonnee(FILE *, donnees_t);
+
+
+int saisirDonnee(FILE * , donnees_t *);
+
+char *agets(char *__restrict__ __s, int __n, FILE *__restrict__ __stream);
+
+
+int tableauFromFilename(char *path, donnees_t *tableau);
 
 #endif
