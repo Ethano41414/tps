@@ -5,7 +5,7 @@ LDLIBS = -lm
 TARGET = main
 
 SRC = main.c \
-    seance1/code.c
+    mod.c
 
 OBJ = $(SRC:.c=.o)
 
