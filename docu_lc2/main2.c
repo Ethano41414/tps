@@ -233,7 +233,6 @@ int write_in_file(liste_t *list, char *pth) {
         fprintf(f,"%s\n",lin->ligne);
         lin=lin->suiv;
     }
-    
     return 1;
 }
 

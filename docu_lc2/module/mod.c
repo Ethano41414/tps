@@ -29,7 +29,7 @@ char *agets(char *__restrict__ __s, int __n, FILE *__restrict__ __stream) {
 
 void show_list(liste_t *self) {
     cellule_t *chain=self->tete;
-    while (chain!=NULL) {
+    while (chain) {
         printf("%s\n",chain->ligne);
         chain=chain->suiv;
     }
@@ -70,6 +70,8 @@ void addfirst(liste_t *list, char *text) {
 
 liste_t *init_void_list() {
     liste_t *list=malloc(sizeof(liste_t));
+    if (!list)
+        return NULL;
     list->tete=NULL;
     list->fin=&list->tete;
     return list;
