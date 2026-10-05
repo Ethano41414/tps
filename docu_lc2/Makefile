@@ -1,0 +1,62 @@
+# ============================================================
+#  Makefile : main.c + module/str.c (+ module/str.h)
+#  Seules les fonctions/variables atteignables depuis main()
+#  sont conservées dans l'exécutable final.
+# ============================================================
+
+CC       ?= gcc
+TARGET   := main2
+BUILD    := build
+
+SRCS     := main2.c module/ethanostr.c module/mod.c
+OBJS     := $(SRCS:%.c=$(BUILD)/%.o)
+DEPS     := $(OBJS:.o=.d)
+
+# --- Options de compilation ---------------------------------
+# -ffunction-sections / -fdata-sections : 1 section par fonction/variable
+# -MMD -MP : génère les dépendances sur les .h (recompile si str.h change)
+CFLAGS   := -std=c11 -Wall -Wextra -Imodule \
+            -ffunction-sections -fdata-sections -MMD -MP
+
+# --- Options d'édition de liens (selon la plateforme) -------
+UNAME_S  := $(shell uname -s 2>/dev/null)
+ifeq ($(UNAME_S),Darwin)
+    LDFLAGS := -Wl,-dead_strip
+else
+    LDFLAGS := -Wl,--gc-sections -Wl,-Map=$(BUILD)/$(TARGET).map
+endif
+
+# --- Mode release (par défaut) / debug ----------------------
+# make          -> taille minimale
+# make DEBUG=1  -> symboles de debug, sans optimisation
+ifeq ($(DEBUG),1)
+    CFLAGS += -O0 -g
+else
+    CFLAGS += -Os
+    LDFLAGS += -s
+endif
+
+# ------------------------------------------------------------
+.PHONY: all clean rebuild size
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
+	@$(MAKE) --no-print-directory size
+
+# Règle générique : compile chaque .c vers build/<chemin>.o
+$(BUILD)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+size: $(TARGET)
+	@size $(TARGET)
+
+rebuild: clean all
+
+clean:
+	rm -rf $(BUILD) $(TARGET)
+
+# Inclut les dépendances générées automatiquement
+-include $(DEPS)
