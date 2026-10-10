@@ -32,8 +32,8 @@ void render_grid(SDL_Renderer *renderer, int **grid, int num_of_case, int case_s
         for (int j=0;j<num_of_case;j++) {
             color=colors[grid[i][j]];
             SDL_SetRenderDrawColor(renderer, (color&0xff0000)>>16, (color&0x00ff00)>>8, color&0x0000ff, 255);
-            rect.y=4+50*i;
-            rect.x=4+50*j;
+            rect.y=4+case_size*i;
+            rect.x=4+case_size*j;
             SDL_RenderFillRect(renderer, &rect);
         }
 }
@@ -128,7 +128,7 @@ int game(int num_of_case,int coups_max,int color_count) {
             }
         }
     }
-
+    freemat(grid,SIZE);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
