@@ -10,11 +10,17 @@ void vecteurToFile(FILE *flux, VecteurType vecteur, int ordre) {//affiche l'ordr
 
 VecteurType vecteurFromFileByName(char *path,int *order) {// lit un fichier et renvoit le vecteur présent dedans
 	VecteurType retour = NULL;
+	char rest;
 	double tmp;
 	FILE *f=fopen(path,"r");
 	if (f) {
 		int ord;
-		fscanf(f,"%d",&ord);
+		sscanf(f,"%d%c",&ord,&rest);
+		if (rest!='\n') {
+			fclose(f);
+			*order=ord;
+			return NULL;
+		}
 		retour=malloc(ord*sizeof(double));
 		if (retour==NULL) {
 			fclose(f);
