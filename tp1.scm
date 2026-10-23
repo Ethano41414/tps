@@ -309,7 +309,7 @@ Exercice 9
             lacc
             (if (membre2 (car l) lacc)
                 (repur (cdr l) lacc)
-                (repur (cdr l) (append lacc ((car l))))
+                (repur (cdr l) (append lacc (list (car l))))
             )
         )
     )))
@@ -317,43 +317,130 @@ Exercice 9
     )
 ))
 
+(epure '(5 7 8 9 4 5 6 3 5 4 7 8 4 5 5 5 6 9 8 5 2 1 5 4))
+
+
+(define union(lambda (l1 l2)
+    (if (null? l2)
+        l1
+        (if (membre2 (car l2) l1)
+            (union (cdr l2) l1)
+            (union (append l1 (list (car l2))) (cdr l2))
+        )
+    )
+))
+
+(union '(5 2 4 6 8) '(4 5 6 7 8))
+
+
+(define inter(lambda (L1 L2)
+    (letrec((rinter (lambda (l1 lacc)
+        (if (null? l1)
+            lacc
+            (if (membre2 (car l1) l2)
+                (rinter (cdr l1) (append lacc (list (car l1))))
+                (rinter (cdr l1) lacc)
+            )
+        )
+    )))
+    (rinter L1 ())
+    )
+))
+
+(inter '(5 0 2 4 6 8) '(4 5 10 6 0 7 8))
 
 
 
+Exercice 10
+
+(define nieme(lambda (n l)
+    (if (or (null? l) (< n 0))
+        (error "ERROR: n value not accepted")
+        (if (= n 1) (car l) (nieme (- n 1) (cdr l)))
+    )
+))
+
+(nieme 1 '(5 7 8 9 4 2 1 5 4))
+(nieme 2 '(5 7 8 9 4 2 1 5 4))
+(nieme 0 '(5 7 8 9 4 2 1 5 4))
+(nieme 9 '(5 7 8 9 4 2 1 5 4))
+(nieme 10 '(5 7 8 9 4 2 1 5 4))
+
+
+Exercice 11
+
+(define niv0(lambda (l)
+    (letrec((rniv0 (lambda (l lf)
+        (if (null? l)
+            lf
+            (if (list? (car l))
+                (rniv0 (cdr l) (append lf (rniv0 (car l) () ) ))
+                (rniv0 (cdr l) (append lf (list (car l))))
+            )
+        )
+    )))
+    (rniv0 l ())
+    )
+))
+
+(niv0 (list (list (list 4)) 8 7 5 6 (list 9 (list 8 2) (list 4 (list 5)) 7) 8 6))
 
 
 
+Exercice 12
+
+(define zip(lambda (l1 l2)
+    (letrec((rzip (lambda (l1 l2 lf)
+        (if (or (null? l1) (null? l2))
+            lf
+            (rzip (cdr l1) (cdr l2) (append lf (list (list (car l1) (car l2)))))
+        )
+    )))
+    (rzip l1 l2 ())
+    )
+))
+
+(zip '(1 3 5 8 9) '(a c b f g f))
+(zip '(1 3 5 8 9 4 9 7 8 5) '(a c b f g f))
+(zip '(1 3 5 8 9 1) '(a c b f g f))
+(zip '(2 6) '())
+(zip '() '(4 9 3))
 
 
+Exercice 13
+
+(define prod(lambda (L1 L2)
+    (letrec((rprod (lambda (l1 rl2 lf)
+        (if (null? l1)
+            lf
+            (if (null? rl2)
+                (rprod (cdr l1) l2 lf)
+                (rprod l1 (cdr rl2) (append lf (list (list (car l1) (car rl2)))))
+            )
+        )
+    )))
+    (rprod L1 L2 '())
+    )
+))
 
 
+(prod '(2 6 e 7) '(a 8))
 
 
+Exercice 14
+al1 pour at least one
+(define som_list(lambda (l)
+    (letrec((rs (lambda (l acc al1)
+        (if (null? l)
+            (if al1 acc (error "ERROR: no real found"))
+            (rs (cdr l) (+ acc (if (real? (car l)) (car l) 0)) (or al1 (real? (car l))))
+        )
+    )))
+    (rs l 0 #f)
+    )
+))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(som_list (list 5 '() 3))
+(som_list (list 5 '() '(3)))
+(som_list (list #f '() '(3)))
 
