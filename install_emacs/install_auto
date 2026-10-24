@@ -1,0 +1,23 @@
+#!/bin/bash
+
+sudo apt update
+sudo apt install -y emacs-gtk mit-scheme
+
+
+if [ ! -f "$HOME/.emacs.d" ]; then
+    mkdir -p "$HOME/.emacs.d"
+fi
+
+if [ ! -f "$HOME/.emacs.d/lisp" ]; then
+    cp -rn ./lisp "$HOME/.emacs.d/"
+fi
+
+
+if [ ! -f "$HOME/.emacs" ]; then
+    cp ./.emacs "$HOME/.emacs"
+fi
+
+
+
+
+

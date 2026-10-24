@@ -444,3 +444,100 @@ al1 pour at least one
 (som_list (list 5 '() '(3)))
 (som_list (list #f '() '(3)))
 
+
+Exercice 15
+
+(define fibo(lambda (n)
+    (letrec((frec(lambda (n l)
+        (if (zero? n)
+            (car (cdr l))
+            (frec (- n 1) (list (car (cdr l)) (+ (car l) (car (cdr l)))))
+        )
+    )))
+    (if (zero? n)
+        1
+        (frec (- n 1) '(1 1))
+    )
+    )
+))
+
+(fibo 0)
+(fibo 1)
+(fibo 2)
+(fibo 3)
+(fibo 4)
+(fibo 5)
+(fibo 6)
+(fibo 30)
+(fibo 50)
+(fibo 200)
+
+
+Exercice 16
+
+(define moy(lambda (l)
+    (letrec((rmoy(lambda (l n acc)
+        (if (null? l)
+            (/ acc n)
+            (rmoy (cdr l) (+ n 1) (+ acc (car l)))
+        )
+    )))
+    (if (null? l)
+        0
+        (rmoy l 0 0)
+    )
+    )
+))
+
+(moy '(3 3))
+(moy '(4 6 2))
+(moy '(8))
+(moy '())
+
+
+
+
+Exercice 17
+
+(define ies(lambda (l n)
+    (letrec((ries(lambda (l li le ls)
+        (if (null? l)
+            (list li le ls)
+            (if (= (car l) n)
+                (ries (cdr l) li (cons n le) ls)
+                (if (< (car l) n)
+                    (ries (cdr l) (append li (list (car l))) le ls)
+                    (ries (cdr l) li le (append ls (list (car l))))
+                )
+            )
+        )
+    )))
+    (ries l '() '() '())
+    )
+))
+
+(ies '(1 5 4 8 7 9 6 8 3 -5 4 8 3 5 1 -2 0 1 2 0 1 5 4 8 7 6 3) 5)
+
+
+
+Exercice 18
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
