@@ -523,6 +523,273 @@ Exercice 17
 Exercice 18
 
 
+(define tri_ins(lambda (l)
+    (letrec((insert (lambda (x lis los)
+        (if (null? lis)
+            (append los (list x))
+            (if (< x (car lis))
+                (append los (cons x lis))
+                (insert x (cdr lis) (append los (list (car lis))))
+            )
+        )
+    )))
+    (letrec((ins (lambda (l1 l2)
+        (if (null? l2)
+            l1
+            (ins (insert (car l2) l1 '()) (cdr l2))
+        )
+    )))
+    (ins '() l)
+    ))
+))
+
+(tri_ins '(4 1 3 5 4 7 90 80 70 45 32 9 6))
+
+
+
+
+Exercice 19
+
+(define indexm(lambda (l return_max_instead)
+    (letrec((indm (lambda (li ind cind max)
+        (if (null? li)
+            (if return_max_instead max ind)
+            (if (< (car li) max)
+                (indm (cdr li) cind (+ cind 1) (car li))
+                (indm (cdr li) ind (+ cind 1) max))))))
+    (if (null? l) (error "ERROR (indexm.indm): void list") (indm l 0 0 (car l))))))
+
+(define erase(lambda (l ind currind)
+    (if (null? l)
+        (error "ERROR (erase): void list or too long index")
+        (if (= ind currind)
+            (cdr l)
+            (cons (car l) (erase (cdr l) ind (+ currind 1)))
+        )
+    )
+))
+
+(define tri_sel(lambda (l)
+    (letrec ((trisel (lambda (li lo)
+        (if (null? li)
+            lo
+            (trisel (erase li (indexm li #f) 0) (append lo (list (indexm li #t))))
+        )
+    )))
+    (trisel l '())
+    )
+))
+
+
+(indexm '(4 5 7 -5 8 9 6 3 2 5 4 2 1 5 7 85 69) #t)
+
+(erase '(5 3 4 8 7 9 6 5 4 2) 3 0)
+
+(tri_sel '(4 1 3 5 4 7 90 80 70 45 32 9 6))
+(tri_sel '(4))
+(tri_sel '(1 3 4 6 7 9 15))
+(tri_sel '(17 12 9 7 6 4 3 1 0))
+
+
+
+Exercice 20 (I must admit I called AI for this one)
+
+(define tri_bul(lambda (l)
+    (letrec ((exchifnrorder (lambda (li)
+        (if (null? li)
+            '()
+            (if (null? (cdr li))
+                li
+                (if (> (car li) (cadr li))
+                    (cons (cadr li) (exchifnrorder (cons (car li) (cddr li))))
+                    (cons (car li) (exchifnrorder (cdr li)))
+                )
+            )
+        )
+    )))
+    (letrec((tribul (lambda (l1)
+        (if (equal? l1 (exchifnrorder l1))
+            l1
+            (tribul (exchifnrorder l1))
+        )
+    )))
+    (if (null? l)
+        l
+        (tribul l)
+    )
+    ))
+))
+
+(tri_bul '(5 40 8 9 4 3 4 60))
+
+
+
+
+
+
+
+Exercice 21
+
+(define len(lambda (l c) (if (null? l) c (len (cdr l) (+ c 1)))))
+(define sorted?(lambda (l) (if (or (null? l) (null? (cdr l))) #t (and (<= (car l) (cadr l)) (sorted? (cdr l))))))
+
+(define tri_fus(lambda (l)
+    (letrec ((leftpart (lambda (l0 n2 c ol)
+        (if (= c n2)
+            ol
+            (leftpart (cdr l0) n2 (+ c 1) (append ol (list (car l0))) )
+        )
+    )))
+    (letrec ((rightpart (lambda (l1 n2 c)
+        (if (= c n2)
+            l1
+            (rightpart (cdr l1) n2 (+ c 1))
+        )
+    )))
+    (letrec ((fus (lambda (g d o)
+        (cond ( (null? g) (append o d) )
+              ( (null? d) (append o g) )
+              (#t
+              (if (< (car g) (car d))
+                  (fus (cdr g) d (append o (list (car g))))
+                  (fus g (cdr d) (append o (list (car d))))
+              ))
+        )
+    )))
+    (if (null? l)
+        l
+        (if (sorted? l)
+            l
+            (fus (tri_fus (leftpart l (quotient (len l 0) 2) 0 '())) (tri_fus (rightpart l (quotient (len l 0) 2) 0)) '())
+        )
+    )
+    )))
+))
+
+(tri_fus '(11))
+(tri_fus '(11 5 7 90 40 6 50 70 3 1 5 7 9 6 4))
+(tri_fus '(1 5 6 7 9 0 2 3 4 8))
+(tri_fus '(5 2 1 6))
+
+
+
+Exercice 22
+
+(define ies(lambda (l n) (letrec((ries(lambda (l li le ls) (if (null? l) (list li le ls) (if (= (car l) n) (ries (cdr l) li (cons n le) ls) (if (< (car l) n) (ries (cdr l) (append li (list (car l))) le ls) (ries (cdr l) li le (append ls (list (car l)))))))))) (ries l '() '() '()))))
+
+
+(define tri_rap(lambda (l)
+    (if (null? l)
+        l
+        (let ((lists (ies l (car l))))
+            (append (tri_rap (car lists)) (append (cadr lists) (tri_rap (caddr lists))))
+        )
+    )
+))
+
+(tri_rap '(11))
+(tri_rap '(11 5 7 90 40 6 50 70 3 1 5 7 9 6 4))
+(tri_rap '(1 5 6 7 9 0 2 3 4 8))
+(tri_rap '(5 2 1 6))
+
+
+
+Exercice 23
+
+(define somme_cible(lambda (l n)
+    (letrec((tsum (lambda (l1 currval ol)
+        (if (null? l1)
+            #f
+            (if (= (+ currval (car l1)) n)
+                (append ol (list (car l1)))
+                (if (< (+ currval (car l1)) n)
+                    (let ((test (tsum (cdr l1) (+ currval (car l1)) (append ol (list (car l1))))))
+                        (if test
+                            test
+                            (tsum (cdr l1) currval ol)
+                        )
+                    )
+                    (tsum (cdr l1) currval ol)
+                )
+            )
+        )
+    )))
+    (if (null? l)
+        (if (= n 0) '() #f)
+        (let ((lis (tsum l 0 '())))
+            (if (not lis)
+                (somme_cible (cdr l) n)
+                lis
+            )
+        )
+    )
+    )
+))                                  #8e ligne, on teste le chemin si on prend en compte cette valeur et également si on ne la prend pas en compte
+
+(somme_cible '(3 6 2 8 4) 13)
+
+
+
+
+
+
+Exercice 24
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
