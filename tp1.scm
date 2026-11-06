@@ -735,10 +735,38 @@ Exercice 23
 
 Exercice 24
 
+(define len(lambda (l c) (if (null? l) c (len (cdr l) (+ c 1)))))
+(define sum(lambda (l) (letrec((sm (lambda (l1 count) (if (null? l1) count (sm (cdr l1) (+ count (car l1))))))) (sm l 0))))
+(define getsingloton(lambda (l index) (if (null? l) (error "ERROR (getsingloton): void list or too long/negative index") (if (= index 0) (list (car l)) (getsingloton (cdr l) (- index 1))))))
+(define erase(lambda (l index) (if (null? l) (error "ERROR (erase): void list or too long/negative index") (if (= 0 index) (cdr l) (cons (car l) (erase (cdr l) (- index 1)))))))
 
+(define partition (lambda (l)
+    (letrec((part (lambda (l1 l2 index lenl2)
+        (if (= (sum l1) (sum l2))
+            (list l1 l2)
+            (if (or (or (null? l2) (= lenl2 1)) (= index lenl2))
+                #f
+                (letrec((testindexs (lambda (curri)
+                    (if (= curri (- lenl2 1))
+                        #f
+                        (let ((test (part (append l1 (getsingloton l2 curri)) (erase l2 curri) curri (- lenl2 1))))
+                            (if (not test)
+                                (testindexs (+ curri 1))
+                                test
+                            )
+                        )
+                    )
+                )))
+                (testindexs 0)
+                )
+            )
+        )
+    )))
+    (part '() l 0 (len l 0))
+    )
+))
 
-
-
+(partition '(1 2 3 4 5 6))
 
 
 
