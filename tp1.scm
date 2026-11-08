@@ -771,10 +771,44 @@ Exercice 24
 
 
 
+Exercice 25
 
+(define len(lambda (l c) (if (null? l) c (len (cdr l) (+ c 1)))))
+(define premiers '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113))
+(define last(lambda (l) (if (null? l) 0 (if (null? (cdr l)) (car l) (last (cdr l))))))
+(define list-end(lambda (l) (if (null? l) (error "ERROR (list-end): null list") (if (null? (cdr l)) '() (cons (car l) (list-end (cdr l)))))))
+(define getsingloton(lambda (l index) (if (null? l) (error "ERROR (getsingloton): void list or too long/negative index") (if (= index 0) (list (car l)) (getsingloton (cdr l) (- index 1))))))
+(define erase(lambda (l index) (if (null? l) (error "ERROR (erase): void list or too long/negative index") (if (= 0 index) (cdr l) (cons (car l) (erase (cdr l) (- index 1)))))))
+(define create_list(lambda (n c l) (if (= c n) l (create_list n (+ c 1) (append l (list (+ c 1)))))))
+(define member?(lambda (val l) (if (null? l) #f (if (= val (car l)) #t (member? val (cdr l))))))
 
+(define permutation_premiere(lambda (n)
+    (letrec((perm (lambda (l1 l2 lenl2)
+        (if (null? l2)
+            l1
+        (if (or (null? l1) (member? (+ (last l1) (last (list-end l1))) premiers))
+            (letrec((indexes (lambda (curri)
+                (if (= curri (- lenl2 1))
+                    #f
+                    (let ((test (perm (append l1 (getsingloton l2 curri)) (erase l2 curri) lenl2)))
+                        (if (not test)
+                            (indexes (+ curri 1))
+                            test
+                        )
+                    )
+                )
+            )))
+            (indexes 0)
+            )
+            #f
+        )
+        )
+    )))
+    (perm '() (create_list n 0 '()) n)
+    )
+))
 
-
+(permutation_premiere 8)
 
 
 
